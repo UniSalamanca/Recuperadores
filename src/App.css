@@ -652,6 +652,10 @@ section[id]{
   align-items: stretch;
   align-items: start;
 }
+.icon-btn--menu.is-open {
+  color: #ffffff; /* 👈 la X será blanca */
+}
+
 
 .media-sidebar {
   background: #f1f3f0;

@@ -1,9 +1,22 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const handleNavClick = () => setMenuOpen(false)
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow
+    if (menuOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = previousOverflow || ""
+    }
+
+    return () => {
+      document.body.style.overflow = previousOverflow || ""
+    }
+  }, [menuOpen])
 
   return (
     <>
@@ -41,26 +54,25 @@ function Header() {
             </div>
             <div className="mobile-actions">
               <button
-  className="icon-btn"
-  type="button"
-  aria-label="Abrir menú"
-  onClick={() => setMenuOpen(prev => !prev)}
->
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-  >
-    <line x1="3" y1="6" x2="21" y2="6" />
-    <line x1="3" y1="12" x2="21" y2="12" />
-    <line x1="3" y1="18" x2="21" y2="18" />
-  </svg>
-</button>
-
+                className="icon-btn"
+                type="button"
+                aria-label="Abrir menú"
+                onClick={() => setMenuOpen(prev => !prev)}
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                >
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
@@ -77,14 +89,44 @@ function Header() {
               </div>
             </div>
             <button
-              className="icon-btn is-active"
+              className={`icon-btn icon-btn--menu ${menuOpen ? "is-open" : ""}`}
               type="button"
-              aria-label="Cerrar menu"
-              onClick={handleNavClick}
+              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((prev) => !prev)}
             >
-              <span className="icon-menu-line" />
-              <span className="icon-menu-line" />
-              <span className="icon-menu-line" />
+              {menuOpen ? (
+                // ✅ X (cerrar)
+                <svg
+                  className="icon-svg"
+                  width="26"
+                  height="26"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.6"
+                  strokeLinecap="round"
+                >
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                </svg>
+              ) : (
+                // ✅ 3 líneas (menú)
+                <svg
+                  className="icon-svg"
+                  width="26"
+                  height="26"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                >
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              )}
             </button>
           </div>
           <nav className="drawer__nav">
